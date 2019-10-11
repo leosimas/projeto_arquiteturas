@@ -23,21 +23,32 @@
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </tableView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ylY-hh-0oc" userLabel="viewErro">
-                                <rect key="frame" x="32" y="411" width="350" height="128"/>
+                                <rect key="frame" x="32" y="392" width="350" height="166"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="label erro" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kUz-ik-HCt" userLabel="labelErro">
                                         <rect key="frame" x="16" y="16" width="318" height="96"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="96" id="24G-WW-nvD"/>
+                                        </constraints>
                                         <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                         <color key="textColor" red="0.76322999612037379" green="0.088067814967660904" blue="0.066585479309597004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pOO-Tz-wV7" userLabel="botaoTentarNovamente">
+                                        <rect key="frame" x="114.5" y="128" width="121" height="30"/>
+                                        <state key="normal" title="Tente Novamente"/>
+                                        <connections>
+                                            <action selector="touchTentarNovamente:" destination="BYZ-38-t0r" eventType="touchUpInside" id="LZf-6l-19l"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" red="0.61040049480000003" green="0.61040049480000003" blue="0.61040049480000003" alpha="0.44467979749999997" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstItem="kUz-ik-HCt" firstAttribute="leading" secondItem="ylY-hh-0oc" secondAttribute="leading" constant="16" id="44P-3z-hWH"/>
                                     <constraint firstItem="kUz-ik-HCt" firstAttribute="top" secondItem="ylY-hh-0oc" secondAttribute="top" constant="16" id="4rJ-uE-tRi"/>
-                                    <constraint firstAttribute="height" constant="128" id="HOP-Xc-TDg"/>
-                                    <constraint firstAttribute="bottom" secondItem="kUz-ik-HCt" secondAttribute="bottom" constant="16" id="M88-Zb-43R"/>
+                                    <constraint firstItem="pOO-Tz-wV7" firstAttribute="centerX" secondItem="ylY-hh-0oc" secondAttribute="centerX" id="LXx-Gg-IYK"/>
+                                    <constraint firstItem="pOO-Tz-wV7" firstAttribute="top" secondItem="kUz-ik-HCt" secondAttribute="bottom" constant="16" id="nJc-OD-otK"/>
+                                    <constraint firstAttribute="bottom" secondItem="pOO-Tz-wV7" secondAttribute="bottom" constant="8" id="rh4-r1-TYy"/>
                                     <constraint firstAttribute="trailing" secondItem="kUz-ik-HCt" secondAttribute="trailing" constant="16" id="u4u-TZ-QGc"/>
                                 </constraints>
                             </view>

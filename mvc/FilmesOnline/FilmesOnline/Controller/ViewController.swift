@@ -10,16 +10,21 @@ import UIKit
 
 class ViewController: UIViewController {
     
-    // estado:
+    // MARK: estado
     private var paginaAtual = 0
     private var filmes: [Filme] = []
     
-    // outlets:
+    // MARK: outlets
     @IBOutlet weak var viewErro: UIView!
     @IBOutlet weak var labelErro: UILabel!
     @IBOutlet weak var viewCarregando: UIView!
     @IBOutlet weak var tableFilmes: UITableView!
     
+    // MARK: actions:
+    
+    @IBAction func touchTentarNovamente(_ sender: Any) {
+        carregarFilmes()
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -35,7 +40,7 @@ class ViewController: UIViewController {
     
     private func exibirErro(_ mensagemErro: String?) {
         if let erro = mensagemErro {
-            labelErro.text = "\(erro)\nToque aqui para tentar novamente"
+            labelErro.text = erro
             viewErro.isHidden = false
         } else {
             viewErro.isHidden = true
