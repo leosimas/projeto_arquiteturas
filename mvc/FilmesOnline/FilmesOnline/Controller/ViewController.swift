@@ -9,23 +9,68 @@
 import UIKit
 
 class ViewController: UIViewController {
-
+    
+    // estado:
+    private var paginaAtual = 0
+    private var filmes: [Filme] = []
+    
+    // outlets:
+    @IBOutlet weak var viewErro: UIView!
+    @IBOutlet weak var labelErro: UILabel!
+    @IBOutlet weak var viewCarregando: UIView!
+    @IBOutlet weak var tableFilmes: UITableView!
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
         
-        MovieDB.instance.listarFilmes(pagina: 1) { (pagina, mensagemErro) in
+        carregarFilmes()
+    }
+    
+    private func exibirFilmes(_ novosFilmes: [Filme]) {
+        exibirErro(nil)
+        filmes.append(contentsOf: novosFilmes)
+        
+    }
+    
+    private func exibirErro(_ mensagemErro: String?) {
+        if let erro = mensagemErro {
+            labelErro.text = "\(erro)\nToque aqui para tentar novamente"
+            viewErro.isHidden = false
+        } else {
+            viewErro.isHidden = true
+        }
+    }
+    
+    private func carregarFilmes() {
+        viewCarregando.isHidden = false
+        exibirErro(nil)
+        
+        let proximaPagina = paginaAtual + 1
+        
+        if proximaPagina == 1 {
+            filmes.removeAll()
+        }
+        
+        MovieDB.instance.listarFilmes(pagina: proximaPagina) { [weak self] (pagina, mensagemErro) in
+            
+            guard let this = self else {
+                return
+            }
+            
+            this.viewCarregando.isHidden = true
+            
             guard let pag = pagina else {
                 if let erro = mensagemErro {
-                    print(erro)
+                    this.exibirErro(erro)
                 }
                 return
             }
             
-            print(pag)
+            this.paginaAtual = proximaPagina
+            this.exibirFilmes(pag.filmes)
         }
     }
-
 
 }
 
