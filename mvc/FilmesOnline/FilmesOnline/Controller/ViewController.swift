@@ -29,13 +29,16 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        tableFilmes.dataSource = self
+        tableFilmes.register(UINib(nibName: "FilmeCell", bundle: nil), forCellReuseIdentifier: "FilmeCell")
+        
         carregarFilmes()
     }
     
     private func exibirFilmes(_ novosFilmes: [Filme]) {
         exibirErro(nil)
         filmes.append(contentsOf: novosFilmes)
-        
+        tableFilmes.reloadData()
     }
     
     private func exibirErro(_ mensagemErro: String?) {
@@ -77,5 +80,24 @@ class ViewController: UIViewController {
         }
     }
 
+}
+
+// MARK: UITableViewDataSource
+
+extension ViewController : UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return filmes.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let filme = filmes[indexPath.row]
+        
+        let cell = tableView.dequeueReusableCell(withIdentifier: "FilmeCell") as! FilmeCell
+        cell.labelTitulo.text = filme.titulo
+        cell.labelData.text = filme.dataLancamento
+        
+        return cell
+    }
+    
 }
 

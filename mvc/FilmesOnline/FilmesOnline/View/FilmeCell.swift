@@ -11,5 +11,7 @@ import UIKit
 class FilmeCell : UITableViewCell {
     
     
+    @IBOutlet weak var labelTitulo: UILabel!
+    @IBOutlet weak var labelData: UILabel!
     
 }
