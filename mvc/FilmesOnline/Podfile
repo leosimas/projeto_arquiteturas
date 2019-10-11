@@ -1,8 +1,10 @@
 platform :ios, '10.0'
+project 'FilmesOnline.xcodeproj'
 
 target 'FilmesOnline' do
     use_frameworks!
 
     pod 'Alamofire', '~> 5.0.0-rc.2'
+    pod 'SwiftyJSON', '~> 4.3.0'
 
 end

@@ -13,6 +13,17 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+        
+        MovieDB.instance.listarFilmes(pagina: 1) { (pagina, mensagemErro) in
+            guard let pag = pagina else {
+                if let erro = mensagemErro {
+                    print(erro)
+                }
+                return
+            }
+            
+            print(pag)
+        }
     }
 
 

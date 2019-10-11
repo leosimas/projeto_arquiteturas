@@ -7,3 +7,11 @@
 //
 
 import Foundation
+
+class Pagina {
+    
+    var numero: Int = 0
+    var total: Int = 0
+    var filmes: [Filme] = []
+    
+}

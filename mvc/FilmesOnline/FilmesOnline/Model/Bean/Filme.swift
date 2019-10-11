@@ -7,3 +7,11 @@
 //
 
 import Foundation
+
+class Filme {
+    
+    var titulo: String = ""
+    var sinopse: String = ""
+    var dataLancamento: String = ""
+    
+}
