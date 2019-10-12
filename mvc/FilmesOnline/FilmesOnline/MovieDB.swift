@@ -17,6 +17,13 @@ class MovieDB {
     private let API_KEY = "1f54bd990f1cdfb230adb312546d765d"
     private let API_URL = "https://api.themoviedb.org/3/"
     
+    private lazy var dateFormatter: DateFormatter = {
+        let df = DateFormatter()
+        df.dateFormat = "yyyy-MM-dd"
+        df.locale = Locale(identifier: "en_US_POSIX")
+        return df
+    }()
+    
     private init() {}
 
     private func criarQueryDic() -> [String:String] {
@@ -83,7 +90,7 @@ class MovieDB {
             let filme = Filme()
             filme.titulo = json["title"].stringValue
             filme.sinopse = json["overview"].stringValue
-            filme.dataLancamento = json["release_date"].stringValue
+            filme.dataLancamento = dateFormatter.date(from: json["release_date"].stringValue)
             
             filmes.append(filme)
         }

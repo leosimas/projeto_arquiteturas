@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  MainViewController.swift
 //  FilmesOnline
 //
 //  Created by SoSucesso on 10/10/19.
@@ -8,11 +8,20 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class MainViewController: UIViewController {
     
     // MARK: estado
-    private var paginaAtual = 0
+    private var paginaAtual: Pagina? = nil
     private var filmes: [Filme] = []
+    private var estaCarregando = false
+    
+    // MARK: formatacao
+    private lazy var dateFormatter: DateFormatter = {
+        let df = DateFormatter()
+        df.dateFormat = "dd/MM/yyyy"
+        df.locale = Locale(identifier: "en_US_POSIX")
+        return df
+    }()
     
     // MARK: outlets
     @IBOutlet weak var viewErro: UIView!
@@ -26,14 +35,19 @@ class ViewController: UIViewController {
         carregarFilmes()
     }
     
+    // MARK: ciclo de vida
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         tableFilmes.dataSource = self
         tableFilmes.register(UINib(nibName: "FilmeCell", bundle: nil), forCellReuseIdentifier: "FilmeCell")
+        tableFilmes.delegate = self
         
         carregarFilmes()
     }
+    
+    // MARK: controle
     
     private func exibirFilmes(_ novosFilmes: [Filme]) {
         exibirErro(nil)
@@ -51,11 +65,18 @@ class ViewController: UIViewController {
     }
     
     private func carregarFilmes() {
+        if estaCarregando {
+            return
+        }
+        if let p = paginaAtual, p.total == p.numero {
+            return
+        }
+        
+        estaCarregando = true
         viewCarregando.isHidden = false
         exibirErro(nil)
         
-        let proximaPagina = paginaAtual + 1
-        
+        let proximaPagina = (paginaAtual?.numero ?? 0) + 1
         if proximaPagina == 1 {
             filmes.removeAll()
         }
@@ -66,6 +87,7 @@ class ViewController: UIViewController {
                 return
             }
             
+            this.estaCarregando = false
             this.viewCarregando.isHidden = true
             
             guard let pag = pagina else {
@@ -75,7 +97,7 @@ class ViewController: UIViewController {
                 return
             }
             
-            this.paginaAtual = proximaPagina
+            this.paginaAtual = pag
             this.exibirFilmes(pag.filmes)
         }
     }
@@ -84,7 +106,7 @@ class ViewController: UIViewController {
 
 // MARK: UITableViewDataSource
 
-extension ViewController : UITableViewDataSource {
+extension MainViewController : UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return filmes.count
     }
@@ -94,10 +116,24 @@ extension ViewController : UITableViewDataSource {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "FilmeCell") as! FilmeCell
         cell.labelTitulo.text = filme.titulo
-        cell.labelData.text = filme.dataLancamento
+        if let data = filme.dataLancamento {
+            cell.labelData.text = dateFormatter.string(from: data)
+        } else {
+            cell.labelData.text = "-"
+        }
         
         return cell
     }
     
+}
+
+// MARK: UITableViewDelegate
+
+extension MainViewController : UITableViewDelegate {
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        if indexPath.row >= filmes.count - 1 {
+            carregarFilmes()
+        }
+    }
 }
 
