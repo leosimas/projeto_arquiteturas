@@ -12,10 +12,11 @@ class Filme {
     
     var id: Int = 0
     var titulo: String = ""
-    var sinopse: String = ""
     var dataLancamento: Date? = nil
     // detalhes:
     var generos: [Genero]? = nil
     var urlSite: String? = nil
+    var pathPoster: String? = nil
+    var sinopse: String = ""
     
 }

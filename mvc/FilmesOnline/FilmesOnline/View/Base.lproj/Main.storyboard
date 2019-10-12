@@ -122,8 +122,10 @@
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6H6-WY-a2n">
                                         <rect key="frame" x="16" y="16" width="382" height="864"/>
                                         <subviews>
-                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="jMK-hD-hJx">
+                                            <imageView clipsSubviews="YES" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="jMK-hD-hJx">
                                                 <rect key="frame" x="63" y="16" width="256" height="256"/>
+                                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <gestureRecognizers/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="256" id="5dL-ny-db3"/>
                                                     <constraint firstAttribute="height" constant="256" id="hek-QK-n5j"/>
@@ -167,13 +169,18 @@
                                                 </attributedString>
                                                 <nil key="highlightedColor"/>
                                             </label>
+                                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="k6U-ct-XIG">
+                                                <rect key="frame" x="172.5" y="125.5" width="37" height="37"/>
+                                            </activityIndicatorView>
                                         </subviews>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstItem="jMK-hD-hJx" firstAttribute="centerX" secondItem="6H6-WY-a2n" secondAttribute="centerX" id="16E-bH-kR0"/>
                                             <constraint firstItem="T10-HR-ihh" firstAttribute="width" secondItem="6H6-WY-a2n" secondAttribute="width" id="3rO-Sv-4RY"/>
+                                            <constraint firstItem="k6U-ct-XIG" firstAttribute="centerX" secondItem="jMK-hD-hJx" secondAttribute="centerX" id="8PP-M3-fbd"/>
                                             <constraint firstItem="CV8-Ol-0rZ" firstAttribute="centerX" secondItem="6H6-WY-a2n" secondAttribute="centerX" id="Adf-jj-VcP"/>
                                             <constraint firstItem="zY8-0y-ShP" firstAttribute="width" secondItem="6H6-WY-a2n" secondAttribute="width" id="Ceu-KM-ptu"/>
+                                            <constraint firstItem="k6U-ct-XIG" firstAttribute="centerY" secondItem="jMK-hD-hJx" secondAttribute="centerY" id="DPG-ur-JZF"/>
                                             <constraint firstItem="T10-HR-ihh" firstAttribute="top" secondItem="CV8-Ol-0rZ" secondAttribute="bottom" constant="16" id="E3t-Xu-BN0"/>
                                             <constraint firstItem="jMK-hD-hJx" firstAttribute="top" secondItem="6H6-WY-a2n" secondAttribute="top" constant="16" id="ELb-no-sBP"/>
                                             <constraint firstItem="CV8-Ol-0rZ" firstAttribute="width" secondItem="6H6-WY-a2n" secondAttribute="width" id="NeR-7I-r7q"/>
@@ -205,6 +212,7 @@
                     </view>
                     <connections>
                         <outlet property="imagePoster" destination="jMK-hD-hJx" id="wYF-G7-rFH"/>
+                        <outlet property="indicatorView" destination="k6U-ct-XIG" id="ISL-bt-fQE"/>
                         <outlet property="labelGeneros" destination="CV8-Ol-0rZ" id="uF4-18-53U"/>
                         <outlet property="labelSinopse" destination="T10-HR-ihh" id="4t5-p5-Sf9"/>
                         <outlet property="labelTitulo" destination="zY8-0y-ShP" id="n43-tW-Al3"/>

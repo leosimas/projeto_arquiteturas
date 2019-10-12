@@ -12,6 +12,9 @@ import UIKit
 class DetalheViewController : UIViewController {
     
     var filme: Filme!
+    // MARK: estado
+    private var carregandoPoster = false
+    private var posterCarregado = false
     
     // MARK: outlets
     
@@ -19,8 +22,30 @@ class DetalheViewController : UIViewController {
     @IBOutlet weak var labelTitulo: UILabel!
     @IBOutlet weak var labelGeneros: UILabel!
     @IBOutlet weak var labelSinopse: UILabel!
+    @IBOutlet weak var indicatorView: UIActivityIndicatorView!
+    
+    // MARK: actions
+    
+    @objc func toqueImagePoster() {
+        if carregandoPoster || posterCarregado {
+            return
+        }
+        
+        carregarPoster()
+    }
+    
+    // MARK: ciclo
     
     override func viewDidLoad() {
+        exibirFilme()
+        
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(toqueImagePoster))
+        imagePoster.addGestureRecognizer(tapGesture)
+    }
+    
+    // MARK: controle
+    
+    private func exibirFilme() {
         labelTitulo.text = filme.titulo
         labelSinopse.text = filme.sinopse
         
@@ -34,6 +59,41 @@ class DetalheViewController : UIViewController {
             labelGeneros.text = texto
         }
         
+        carregarPoster()
     }
+    
+    private func carregarPoster() {
+        exibirCarregandoPoster(true)
+        
+        MovieDB.instance.carregarPoster(filme: filme) { [weak self] (image) in
+            guard let this = self else {
+                return
+            }
+            
+            this.exibirCarregandoPoster(false)
+            this.exibirPoster(image)
+        }
+    }
+    
+    private func exibirCarregandoPoster(_ carregando: Bool) {
+        carregandoPoster = carregando
+        indicatorView.isHidden = !carregando
+        if carregando {
+            indicatorView.startAnimating()
+        } else {
+            indicatorView.stopAnimating()
+        }
+    }
+    
+    private func exibirPoster(_ image: UIImage?) {
+        if let img = image {
+            imagePoster.image = img
+            posterCarregado = true
+        } else {
+            imagePoster.image = UIImage(named: "ic_error")
+            posterCarregado = false
+        }
+    }
+    
     
 }

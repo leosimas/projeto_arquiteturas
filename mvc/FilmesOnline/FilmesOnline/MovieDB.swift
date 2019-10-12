@@ -9,6 +9,8 @@
 import Alamofire
 import Foundation
 import SwiftyJSON
+import UIKit
+import AlamofireImage
 
 class MovieDB {
     
@@ -16,6 +18,7 @@ class MovieDB {
     
     private let API_KEY = "1f54bd990f1cdfb230adb312546d765d"
     private let API_URL = "https://api.themoviedb.org/3/"
+    private let API_IMG_URL = "https://image.tmdb.org/t/p/"
     
     private lazy var dateFormatter: DateFormatter = {
         let df = DateFormatter()
@@ -105,6 +108,28 @@ class MovieDB {
         }
     }
     
+    func carregarPoster(filme: Filme, completion: @escaping (Image?) -> Void) {
+        guard let path = filme.pathPoster else {
+            completion(nil)
+            return
+        }
+        let urlImagem = "\(API_IMG_URL)w300\(path)"
+        AF.request(urlImagem).responseImage { response in
+            debugPrint(response)
+
+            print(response.request)
+            print(response.response)
+            debugPrint(response.result)
+            
+            switch response.result {
+            case .success(let value):
+                completion(value)
+            case .failure( _):
+                completion(nil)
+            }
+        }
+    }
+    
     private func criarPagina(_ json: JSON) -> Pagina {
         let pagina = Pagina()
         pagina.numero = json["page"].intValue
@@ -144,6 +169,10 @@ class MovieDB {
         
         if let homepage = json["homepage"].string {
             filme.urlSite = homepage
+        }
+        
+        if let poster = json["poster_path"].string {
+            filme.pathPoster = poster
         }
         
         return filme
