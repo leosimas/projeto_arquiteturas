@@ -21,8 +21,8 @@ class DetalheViewController : UIViewController {
     @IBOutlet weak var labelSinopse: UILabel!
     
     override func viewDidLoad() {
-        labelTitulo.text = "\(filme.titulo)\n"
-        labelSinopse.text = "\n\n\(filme.sinopse)"
+        labelTitulo.text = filme.titulo
+        labelSinopse.text = filme.sinopse
         
         let qtde = filme.generos?.count ?? 0
         if qtde == 0 {
