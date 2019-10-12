@@ -16,6 +16,6 @@ class Filme {
     var dataLancamento: Date? = nil
     // detalhes:
     var generos: [Genero]? = nil
-    //var
+    var urlSite: String? = nil
     
 }

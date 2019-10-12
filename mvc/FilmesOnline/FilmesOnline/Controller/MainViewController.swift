@@ -47,7 +47,19 @@ class MainViewController: UIViewController {
         carregarFilmes()
     }
     
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let detalheVC = segue.destination as? DetalheViewController,
+            let filme = sender as? Filme {
+            detalheVC.filme = filme
+        }
+    }
+    
     // MARK: controle
+    
+    private func exibirCarregando(_ carregando: Bool) {
+        estaCarregando = carregando
+        viewCarregando.isHidden = !carregando
+    }
     
     private func exibirFilmes(_ novosFilmes: [Filme]) {
         exibirErro(nil)
@@ -72,8 +84,7 @@ class MainViewController: UIViewController {
             return
         }
         
-        estaCarregando = true
-        viewCarregando.isHidden = false
+        exibirCarregando(true)
         exibirErro(nil)
         
         let proximaPagina = (paginaAtual?.numero ?? 0) + 1
@@ -87,8 +98,7 @@ class MainViewController: UIViewController {
                 return
             }
             
-            this.estaCarregando = false
-            this.viewCarregando.isHidden = true
+            this.exibirCarregando(false)
             
             guard let pag = pagina else {
                 if let erro = mensagemErro {
@@ -99,6 +109,34 @@ class MainViewController: UIViewController {
             
             this.paginaAtual = pag
             this.exibirFilmes(pag.filmes)
+        }
+    }
+    
+    private func carregarDetalhes(_ filme: Filme) {
+        if estaCarregando {
+            return
+        }
+        if let p = paginaAtual, p.total == p.numero {
+            return
+        }
+        
+        exibirCarregando(true)
+        
+        MovieDB.instance.detalharFilme(filme) { [weak self]  (filmeDetalhado, mensagemErro) in
+            guard let this = self else {
+                return
+            }
+            
+            this.exibirCarregando(false)
+            
+            guard let detalhe = filmeDetalhado else {
+                if let erro = mensagemErro {
+                    this.exibirErro(erro)
+                }
+                return
+            }
+            
+            this.performSegue(withIdentifier: "detalharFilme", sender: detalhe)
         }
     }
 
@@ -130,10 +168,16 @@ extension MainViewController : UITableViewDataSource {
 // MARK: UITableViewDelegate
 
 extension MainViewController : UITableViewDelegate {
+    
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         if indexPath.row >= filmes.count - 1 {
             carregarFilmes()
         }
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let filme = filmes[indexPath.row]
+        carregarDetalhes(filme)
     }
 }
 

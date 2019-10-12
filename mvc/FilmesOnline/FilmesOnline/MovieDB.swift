@@ -75,6 +75,36 @@ class MovieDB {
         
     }
     
+    func detalharFilme(_ filme: Filme, completion: @escaping (Filme?, String?) -> Void) {
+        let stringUrl = "\(API_URL)movie/\(filme.id)"
+        guard let url = URL(string: stringUrl) else {
+            completion(nil, "Erro na requisição")
+            return
+        }
+        
+        AF.request(url, method: .get, parameters: criarQueryDic())
+            //.validate(statusCode: 200...299)
+            .responseJSON { [weak self] response in
+                guard let this = self else {
+                    return
+                }
+                
+                switch response.result {
+                case .success(let value):
+                    let json = JSON(value)
+                    if let erro = json["errors"].array?[0].string {
+                        completion(nil, erro)
+                        return
+                    }
+                    
+                    let filme = this.criarFilme(json)
+                    completion(filme, nil)
+                case .failure(let error):
+                    completion(nil, "Erro na requisição : \(error.localizedDescription)")
+                }
+        }
+    }
+    
     private func criarPagina(_ json: JSON) -> Pagina {
         let pagina = Pagina()
         pagina.numero = json["page"].intValue
@@ -87,15 +117,36 @@ class MovieDB {
         var filmes: [Filme] = []
         
         jsonArray.forEach { (json) in
-            let filme = Filme()
-            filme.titulo = json["title"].stringValue
-            filme.sinopse = json["overview"].stringValue
-            filme.dataLancamento = dateFormatter.date(from: json["release_date"].stringValue)
-            
+            let filme = criarFilme(json)
             filmes.append(filme)
         }
         
         return filmes
+    }
+    
+    private func criarFilme(_ json: JSON) -> Filme {
+        let filme = Filme()
+        filme.id = json["id"].intValue
+        filme.titulo = json["title"].stringValue
+        filme.sinopse = json["overview"].stringValue
+        filme.dataLancamento = dateFormatter.date(from: json["release_date"].stringValue)
+        
+        if let jsonGenres = json["genres"].array {
+            var generos: [Genero] = []
+            jsonGenres.forEach { (jsonGen) in
+                let g = Genero()
+                g.id = jsonGen["id"].intValue
+                g.nome = jsonGen["name"].stringValue
+                generos.append(g)
+            }
+            filme.generos = generos
+        }
+        
+        if let homepage = json["homepage"].string {
+            filme.urlSite = homepage
+        }
+        
+        return filme
     }
     
 }
