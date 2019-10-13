@@ -46,7 +46,7 @@ class MovieDB {
             stringUrl.append("movie/upcoming")
         } else {
             stringUrl.append("search/movie")
-            //parameters["query"] = termoPesquisa
+            parameters["query"] = termoPesquisa
         }
         
         guard let url = URL(string: stringUrl) else {
@@ -55,7 +55,6 @@ class MovieDB {
         }
         
         AF.request(url, method: .get, parameters: parameters)
-            //.validate(statusCode: 200...299)
             .responseJSON { [weak self] response in
                 guard let this = self else {
                     return
@@ -86,7 +85,6 @@ class MovieDB {
         }
         
         AF.request(url, method: .get, parameters: criarQueryDic())
-            //.validate(statusCode: 200...299)
             .responseJSON { [weak self] response in
                 guard let this = self else {
                     return
@@ -115,12 +113,6 @@ class MovieDB {
         }
         let urlImagem = "\(API_IMG_URL)w300\(path)"
         AF.request(urlImagem).responseImage { response in
-            debugPrint(response)
-
-            print(response.request)
-            print(response.response)
-            debugPrint(response.result)
-            
             switch response.result {
             case .success(let value):
                 completion(value)
