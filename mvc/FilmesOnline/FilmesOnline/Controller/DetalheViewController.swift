@@ -47,7 +47,11 @@ class DetalheViewController : UIViewController {
     
     private func exibirFilme() {
         labelTitulo.text = filme.titulo
-        labelSinopse.text = filme.sinopse
+        if filme.sinopse.isEmpty {
+            labelSinopse.text = "-"
+        } else {
+            labelSinopse.text = filme.sinopse
+        }
         
         let qtde = filme.generos?.count ?? 0
         if qtde == 0 {
@@ -55,7 +59,7 @@ class DetalheViewController : UIViewController {
         } else if let generos = filme.generos {
             let texto = generos.map({ (genero) -> String in
                 genero.nome
-            }).joined(separator: " ,")
+            }).joined(separator: " , ")
             labelGeneros.text = texto
         }
         
