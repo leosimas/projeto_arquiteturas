@@ -116,9 +116,6 @@ class MainViewController: UIViewController {
         if estaCarregando {
             return
         }
-        if let p = paginaAtual, p.total == p.numero {
-            return
-        }
         
         exibirCarregando(true)
         
