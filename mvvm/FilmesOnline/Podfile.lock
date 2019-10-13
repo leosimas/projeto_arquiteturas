@@ -2,24 +2,33 @@ PODS:
   - Alamofire (5.0.0-rc.2)
   - AlamofireImage (4.0.0-beta.5):
     - Alamofire (~> 5.0.0-rc.2)
+  - RxRelay (5.0.0):
+    - RxSwift (~> 5)
+  - RxSwift (5.0.0)
   - SwiftyJSON (4.3.0)
 
 DEPENDENCIES:
   - Alamofire (~> 5.0.0-rc.2)
   - AlamofireImage (~> 4.0.0-beta.5)
+  - RxRelay (~> 5.0.0)
+  - RxSwift (~> 5.0.0)
   - SwiftyJSON (~> 4.3.0)
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
     - Alamofire
     - AlamofireImage
+    - RxRelay
+    - RxSwift
     - SwiftyJSON
 
 SPEC CHECKSUMS:
   Alamofire: f9450d3c7f6bea2ad62e7a541c3e9b186c7991d6
   AlamofireImage: f6dfe201f6d59cc6a045b5cb228b58962b8ef31d
+  RxRelay: 4f7409406a51a55cd88483f21ed898c234d60f18
+  RxSwift: 8b0671caa829a763bbce7271095859121cbd895f
   SwiftyJSON: 6faa0040f8b59dead0ee07436cbf76b73c08fd08
 
-PODFILE CHECKSUM: c9b205ba36465d0da1e30f5e5edfe0ce9088c0ad
+PODFILE CHECKSUM: 1866f02f7ca7947b2a263338afa5282fb8e65080
 
 COCOAPODS: 1.7.5
