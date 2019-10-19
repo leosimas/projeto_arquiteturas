@@ -77,36 +77,21 @@ class MainViewController: UIViewController {
     }
     
     private func carregarFilmes() {
-        if estaCarregando {
-            return
-        }
-        if let p = paginaAtual, p.total == p.numero {
-            return
-        }
-        
+        if estaCarregando { return }
+        if let p = paginaAtual, p.total == p.numero { return }
         exibirCarregando(true)
         exibirErro(nil)
-        
         let proximaPagina = (paginaAtual?.numero ?? 0) + 1
-        if proximaPagina == 1 {
-            filmes.removeAll()
-        }
-        
+        if proximaPagina == 1 { filmes.removeAll() }
         MovieDB.instance.listarFilmes(pagina: proximaPagina) { [weak self] (pagina, mensagemErro) in
-            
-            guard let this = self else {
-                return
-            }
-            
+            guard let this = self else { return }
             this.exibirCarregando(false)
-            
             guard let pag = pagina else {
                 if let erro = mensagemErro {
                     this.exibirErro(erro)
                 }
                 return
             }
-            
             this.paginaAtual = pag
             this.exibirFilmes(pag.filmes)
         }

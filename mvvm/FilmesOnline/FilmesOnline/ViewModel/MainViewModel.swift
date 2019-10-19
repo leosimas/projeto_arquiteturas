@@ -25,45 +25,22 @@ class MainViewModel {
     func getErro() -> Observable<String?> { return erro.asObservable() }
     func getDetalhes() -> Observable<FilmeViewModel> { return filmeDetalhado.asObservable() }
     
-    // MARK: formatacao
-    private lazy var dateFormatter: DateFormatter = {
-        let df = DateFormatter()
-        df.dateFormat = "dd/MM/yyyy"
-        df.locale = Locale(identifier: "en_US_POSIX")
-        return df
-    }()
-    
     func carregarFilmes() {
-        if carregando.value {
-            return
-        }
-        
-        if let p = paginaAtual, p.total == p.numero {
-            return
-        }
-        
+        if carregando.value { return }
+        if let p = paginaAtual, p.total == p.numero { return }
         carregando.accept(true)
         erro.accept(nil)
-        
         let proximaPagina = (paginaAtual?.numero ?? 0) + 1
-        if proximaPagina == 1 {
-            filmes.removeAll()
-        }
-        
+        if proximaPagina == 1 { filmes.removeAll()}
         MovieDB.instance.listarFilmes(pagina: proximaPagina) { [weak self] (pagina, mensagemErro) in
-            guard let this = self else {
-                return
-            }
-            
+            guard let this = self else { return }
             this.carregando.accept(false)
-            
             guard let pag = pagina else {
                 if let msg = mensagemErro {
                     this.erro.accept(msg)
                 }
                 return
             }
-            
             this.paginaAtual = pag
             this.filmes.append(contentsOf: pag.filmes)
             var viewModels: [FilmeViewModel] = []
