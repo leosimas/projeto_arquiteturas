@@ -99,5 +99,4 @@ class DetalheViewController : UIViewController {
         }
     }
     
-    
 }
